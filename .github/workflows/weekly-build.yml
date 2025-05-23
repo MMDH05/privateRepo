@@ -79,8 +79,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.version.outputs.version }}-weekly-${{ steps.date.outputs.date }}
-          name: Weekly Build v${{ steps.version.outputs.version }} - ${{ steps.date.outputs.date }}
+          tag_name: v${{ steps.version.outputs.version }}
+          name: v${{ steps.version.outputs.version }} - ${{ steps.commit.outputs.sha }}
           body: |
             Automated weekly build of APPU for Windows
             
