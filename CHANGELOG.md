@@ -8,24 +8,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- New features go here
+- Workflows
+- Changelog md
 
 ### Changed
-- Changes to existing functionality go here
+- none
 
 ### Deprecated
-- Soon-to-be removed features go here
+- none
 
 ### Removed
-- Removed features go here
+- none
 
 ### Fixed
-- Bug fixes go here
+- Incorrect commit and tag logic
 
 ### Security
-- Security improvements go here
+- none
 
-## [1.0.0] - 2024-01-01
+## [1.0.2] - 2025-05-23
 
 ### Added
 - Initial release

@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: main
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -47,6 +49,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: main
       
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -80,7 +84,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          name: v${{ steps.version.outputs.version }} - ${{ steps.commit.outputs.sha }}
+          name: v${{ steps.version.outputs.version }} - ${{ steps.commit.outputs.message }}
           body: |
             Automated weekly build of APPU for Windows
             
