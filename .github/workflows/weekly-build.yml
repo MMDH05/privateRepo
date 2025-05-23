@@ -1,0 +1,73 @@
+name: Weekly Build
+
+on:
+  schedule:
+    # Run every Sunday at 2 AM UTC
+    - cron: '0 2 * * 0'
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'yarn'
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      
+      - name: Build Electron app
+        run: yarn make
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: appu-windows-${{ github.run_number }}
+          path: out/make/**/*
+          retention-days: 30
+  
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' # Only create releases for scheduled runs
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: appu-windows-${{ github.run_number }}
+          path: ./artifacts
+      
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: weekly-${{ steps.date.outputs.date }}
+          name: Weekly Build - ${{ steps.date.outputs.date }}
+          body: |
+            Automated weekly build of APPU for Windows
+            
+            Built on: ${{ steps.date.outputs.date }}
+            Commit: ${{ github.sha }}
+            
+            ## Downloads
+            - Windows: `.exe` installer and `.zip` package
+          files: ./artifacts/**/*
+          draft: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
