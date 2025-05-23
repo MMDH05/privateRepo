@@ -1,5 +1,8 @@
 name: Weekly Build
 
+permissions:
+  contents: write
+
 on:
   schedule:
     # Run every Sunday at 2 AM UTC
