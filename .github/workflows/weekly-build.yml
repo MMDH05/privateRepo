@@ -91,13 +91,14 @@ jobs:
             Version: ${{ steps.version.outputs.version }}
             Built on: ${{ steps.date.outputs.date }}
             Commit: ${{ steps.commit.outputs.sha }} - ${{ steps.commit.outputs.message }}
+
+            ## Download Latest Installer
+            - [Windows 10 / 11 Installer](https://github.com/${{ github.repository }}/releases/download/v${{ steps.version.outputs.version }}/appu-setup-${{ steps.version.outputs.version }}.exe)
             
             ## Changes in this release
             ${{ steps.changelog.outputs.changelog }}
-            
-            ## Downloads
-            - Windows: `.exe` installer and `.zip` package
-          files: ./artifacts/**/*
+          
+          files: ./artifacts/**/*.exe
           draft: false
           prerelease: false
         env:
